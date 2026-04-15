@@ -136,7 +136,11 @@ class SplayTreeMapTest {
 
     @Test
     void testEntrySet() {
-        fail("Not yet implemented");
+        SplayTreeMap<Integer, String> map = new SplayTreeMap<>();
+        map.put(2, "two");
+        map.put(1, "one");
+        map.put(3, "three");
+        assertEquals("[1, 2, 3]", map.keySet().toString());
     }
 
     @Test

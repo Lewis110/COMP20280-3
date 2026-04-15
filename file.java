@@ -6,6 +6,6 @@ public class file {
 
 /*
 git add .
-git commit -m "added treemap.java to extend the four constructors of the tree map"
+git commit -m "added treemap helpers"
 git push
  */

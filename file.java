@@ -6,6 +6,6 @@ public class file {
 
 /*
 git add .
-git commit -m "added my own finished labs to work off of"
+git commit -m "fixing the src path and fixing pathing errors"
 git push
  */

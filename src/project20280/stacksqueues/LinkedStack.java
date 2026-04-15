@@ -1,7 +1,7 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
-import src.project20280.interfaces.Stack;
-import src.project20280.list.DoublyLinkedList;
+import project20280.interfaces.Stack;
+import project20280.list.DoublyLinkedList;
 
 public class LinkedStack<E> implements Stack<E> {
 

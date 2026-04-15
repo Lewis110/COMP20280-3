@@ -1,7 +1,7 @@
-package src.project20280.tree;
+package project20280.tree;
 
-import src.project20280.interfaces.Position;
-import src.project20280.interfaces.Tree;
+import project20280.interfaces.Position;
+import project20280.interfaces.Tree;
 
 import java.util.ArrayList;
 import java.util.Iterator;

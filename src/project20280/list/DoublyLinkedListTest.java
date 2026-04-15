@@ -1,4 +1,4 @@
-package src.project20280.list;
+package project20280.list;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 /**
  * A map with additional support for keys from a total ordering.

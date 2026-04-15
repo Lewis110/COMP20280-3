@@ -1,6 +1,6 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
-import src.project20280.interfaces.Queue;
+import project20280.interfaces.Queue;
 
 public class ArrayQueue<E> implements Queue<E> {
 

@@ -6,6 +6,6 @@ public class file {
 
 /*
 git add .
-git commit -m "fixing the src path and fixing pathing errors"
+git commit -m "Fixing my merging of the two directories"
 git push
  */

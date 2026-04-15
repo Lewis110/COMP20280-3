@@ -1,4 +1,4 @@
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 /**
  * An interface for a binary tree, in which each node has at most two children.

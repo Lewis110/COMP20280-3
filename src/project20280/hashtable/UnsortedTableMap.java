@@ -1,7 +1,7 @@
-package src.project20280.hashtable;
+package project20280.hashtable;
 
-import src.project20280.interfaces.AbstractMap;
-import src.project20280.interfaces.Entry;
+import project20280.interfaces.AbstractMap;
+import project20280.interfaces.Entry;
 
 import java.util.ArrayList;
 import java.util.Iterator;

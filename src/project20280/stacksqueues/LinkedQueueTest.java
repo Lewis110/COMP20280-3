@@ -1,4 +1,4 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
 import org.junit.jupiter.api.Test;
 

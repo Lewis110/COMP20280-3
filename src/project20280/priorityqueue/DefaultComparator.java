@@ -1,4 +1,4 @@
-package src.project20280.priorityqueue;
+package project20280.priorityqueue;
 
 import java.util.Comparator;
 

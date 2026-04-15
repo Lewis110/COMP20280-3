@@ -1,11 +1,11 @@
-package src.project20280.tree;
+package project20280.tree;
 
-//import src.project20280.interfaces.AbstractMap;
+//import project20280.interfaces.AbstractMap;
 
-import src.project20280.interfaces.AbstractMap;
-import src.project20280.interfaces.Entry;
-import src.project20280.interfaces.SortedMap;
-import src.project20280.priorityqueue.DefaultComparator;
+import project20280.interfaces.AbstractMap;
+import project20280.interfaces.Entry;
+import project20280.interfaces.SortedMap;
+import project20280.priorityqueue.DefaultComparator;
 
 import java.util.Comparator;
 

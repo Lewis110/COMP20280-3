@@ -1,4 +1,4 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
 class BracketChecker {
     private final String input;

@@ -1,4 +1,4 @@
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 /**
  * An interface for an associative map which binds a key uniquely to a value.

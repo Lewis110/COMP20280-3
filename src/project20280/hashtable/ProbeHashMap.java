@@ -1,6 +1,6 @@
-package src.project20280.hashtable;
+package project20280.hashtable;
 
-import src.project20280.interfaces.Entry;
+import project20280.interfaces.Entry;
 
 public class ProbeHashMap<K, V> extends AbstractHashMap<K, V> {
     private MapEntry<K, V>[] table;

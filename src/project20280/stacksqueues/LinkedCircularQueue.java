@@ -1,7 +1,7 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
-import src.project20280.interfaces.Queue;
-import src.project20280.list.CircularlyLinkedList;
+import project20280.interfaces.Queue;
+import project20280.list.CircularlyLinkedList;
 
 /**
  * Realization of a circular FIFO queue as an adaptation of a

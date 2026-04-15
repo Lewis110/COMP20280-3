@@ -1,7 +1,7 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
 import org.junit.jupiter.api.Test;
-import src.project20280.interfaces.Queue;
+import project20280.interfaces.Queue;
 
 import java.util.Optional;
 

@@ -6,7 +6,7 @@
  *
  */
 
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 import java.util.Iterator;
 

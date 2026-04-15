@@ -1,4 +1,4 @@
-package src.project20280.tree;
+package project20280.tree;
 
 import org.junit.jupiter.api.Test;
 

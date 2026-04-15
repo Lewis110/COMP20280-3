@@ -1,7 +1,7 @@
-package src.project20280.list;
+package project20280.list;
 
 import org.junit.jupiter.api.Test;
-import src.project20280.interfaces.List;
+import project20280.interfaces.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

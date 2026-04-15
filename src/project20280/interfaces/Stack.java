@@ -1,4 +1,4 @@
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 public interface Stack<E> {
 

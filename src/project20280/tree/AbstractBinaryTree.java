@@ -1,7 +1,7 @@
-package src.project20280.tree;
+package project20280.tree;
 
-import src.project20280.interfaces.BinaryTree;
-import src.project20280.interfaces.Position;
+import project20280.interfaces.BinaryTree;
+import project20280.interfaces.Position;
 
 import java.util.ArrayList;
 import java.util.List;

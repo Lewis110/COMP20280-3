@@ -1,4 +1,4 @@
-package src.project20280.interfaces;
+package project20280.interfaces;
 
 /**
  * An interface for a position which is an abstraction for the

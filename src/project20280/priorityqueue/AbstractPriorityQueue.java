@@ -1,8 +1,8 @@
-package src.project20280.priorityqueue;
+package project20280.priorityqueue;
 
 
-import src.project20280.interfaces.Entry;
-import src.project20280.interfaces.PriorityQueue;
+import project20280.interfaces.Entry;
+import project20280.interfaces.PriorityQueue;
 
 import java.util.Comparator;
 

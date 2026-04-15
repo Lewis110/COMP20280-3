@@ -1,7 +1,7 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
-import src.project20280.interfaces.Deque;
-import src.project20280.list.DoublyLinkedList;
+import project20280.interfaces.Deque;
+import project20280.list.DoublyLinkedList;
 
 public class LinkedDeque<E> implements Deque<E> {
 

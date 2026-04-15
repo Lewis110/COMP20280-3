@@ -1,6 +1,6 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
-import src.project20280.interfaces.Stack;
+import project20280.interfaces.Stack;
 
 public class ArrayStack<E> implements Stack<E> {
 

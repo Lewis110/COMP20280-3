@@ -1,7 +1,7 @@
-package src.project20280.stacksqueues;
+package project20280.stacksqueues;
 
 import org.junit.jupiter.api.Test;
-import src.project20280.interfaces.Deque;
+import project20280.interfaces.Deque;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

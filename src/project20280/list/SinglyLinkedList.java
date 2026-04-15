@@ -1,6 +1,6 @@
-package src.project20280.list;
+package project20280.list;
 
-import src.project20280.interfaces.List;
+import project20280.interfaces.List;
 
 import java.util.Iterator;
 

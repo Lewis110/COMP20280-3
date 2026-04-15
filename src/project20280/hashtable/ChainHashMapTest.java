@@ -1,7 +1,7 @@
-package src.project20280.hashtable;
+package project20280.hashtable;
 
 import org.junit.jupiter.api.Test;
-import src.project20280.priorityqueue.DefaultComparator;
+import project20280.priorityqueue.DefaultComparator;
 
 import java.util.ArrayList;
 

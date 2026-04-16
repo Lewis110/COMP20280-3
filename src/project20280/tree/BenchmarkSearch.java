@@ -1,6 +1,7 @@
 package project20280.tree;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 /**
  * Search Benchmark
@@ -8,11 +9,6 @@ import java.util.*;
  *   - Successful search
  *   - Unsuccessful search
  * across different input sizes and patterns.
- *
- * HOW TO USE:
- *   1. Drop this file into the same package as your Treap and AVLTreeMap.
- *   2. Replace the stub calls below with your actual put()/get() methods.
- *   3. Run main() and copy the printed CSV into the chart widget.
  */
 
 public class BenchmarkSearch {
@@ -46,15 +42,18 @@ public class BenchmarkSearch {
         // shuffle 10% of elements
         int swaps = n / 10;
         for (int i = 0; i < swaps; i++) {
-            int x = rng.nextInt(n), y = rng.nextInt(n);
-            Integer tmp = a[x]; a[x] = a[y]; a[y] = tmp;
+            int x = rng.nextInt(n);
+            int y = rng.nextInt(n);
+            Integer tmp = a[x];
+            a[x] = a[y];
+            a[y] = tmp;
         }
         return a;
     }
 
     static long medianNs(Runnable task) {
-        // warmup
         for (int i = 0; i < WARMUP_REPS; i++) task.run();
+
         long[] times = new long[MEASURE_REPS];
         for (int i = 0; i < MEASURE_REPS; i++) {
             long t0 = System.nanoTime();
@@ -67,99 +66,153 @@ public class BenchmarkSearch {
 
     interface MapWrapper {
         void put(int key);
-        boolean get(int key);   // returns true if found
+        boolean get(int key);
         void clear();
         String name();
     }
 
     static MapWrapper javaTreeMap() {
-        TreeMap<Integer, Integer> m = new TreeMap<>();
         return new MapWrapper() {
-            public void put(int k)      { m.put(k, k); }
-            public boolean get(int k)   { return m.checkKey(k); }
-            public String name()        { return "java.util.TreeMap"; }
+            private java.util.TreeMap<Integer, Integer> m = new java.util.TreeMap<>();
+
+            @Override
+            public void put(int k) {
+                m.put(k, k);
+            }
+
+            @Override
+            public boolean get(int k) {
+                return m.containsKey(k);
+            }
+
+            @Override
+            public void clear() {
+                m = new java.util.TreeMap<>();
+            }
+
+            @Override
+            public String name() {
+                return "java.util.TreeMap";
+            }
         };
     }
 
     static MapWrapper avlTreeMap() {
-        // TODO
-        TreeMap<Integer, Integer> stub = new TreeMap<>();
         return new MapWrapper() {
-            public void put(int k)      { stub.put(k, k); /* replace */ }
-            public boolean get(int k)   { return stub.checkKey(k); /* replace */ }
-            public String name()        { return "AVLTreeMap"; }
+            private AVLTreeMap<Integer, Integer> m = new AVLTreeMap<>();
+
+            @Override
+            public void put(int k) {
+                m.put(k, k);
+            }
+
+            @Override
+            public boolean get(int k) {
+                return m.get(k) != null;
+            }
+
+            @Override
+            public void clear() {
+                m = new AVLTreeMap<>();
+            }
+
+            @Override
+            public String name() {
+                return "AVLTreeMap";
+            }
         };
     }
 
     static MapWrapper treap() {
-        // TODO
-        TreeMap<Integer, Integer> stub = new TreeMap<>();
         return new MapWrapper() {
-            public void put(int k)      { stub.put(k, k); /* replace */ }
-            public boolean get(int k)   { return stub.checkKey(k); /* replace */ }
-            public String name()        { return "Treap"; }
+            private TreapMap<Integer, Integer> m = new TreapMap<>(42L);
+
+            @Override
+            public void put(int k) {
+                m.put(k, k);
+            }
+
+            @Override
+            public boolean get(int k) {
+                return m.get(k) != null;
+            }
+
+            @Override
+            public void clear() {
+                m = new TreapMap<>(42L);
+            }
+
+            @Override
+            public String name() {
+                return "TreapMap";
+            }
         };
     }
 
-    record Result(String structure, String pattern, int n,
-                  double successMs, double failMs) {}
+    record Result(String structure, String pattern, int n, double successMs, double failMs) {}
 
     static Result measure(MapWrapper map, String pattern, Integer[] data) {
         int n = data.length;
-        Random rng = new Random(99);
+        int missStart = n * 20 + 1;
 
-        // Build a set of keys that are definitely NOT in the map
-        // (values outside the inserted range)
-        int missBound = n * 10 + 1;
+        // build once
+        map.clear();
+        for (int k : data) map.put(k);
 
         long successNs = medianNs(() -> {
-            map.clear();
-            for (int k : data) map.put(k);
-            // search for every key that was inserted
             for (int k : data) map.get(k);
         });
 
         long failNs = medianNs(() -> {
-            map.clear();
-            for (int k : data) map.put(k);
-            // search for keys guaranteed absent
-            for (int i = 0; i < n; i++) map.get(missBound + i);
+            for (int i = 0; i < n; i++) map.get(missStart + i);
         });
 
         double successMs = (double) successNs / NANOS_PER_MS;
-        double failMs    = (double) failNs    / NANOS_PER_MS;
+        double failMs = (double) failNs / NANOS_PER_MS;
 
         return new Result(map.name(), pattern, n, successMs, failMs);
     }
 
     public static void main(String[] args) {
-        List<MapWrapper> structures = List.of(javaTreeMap(), avlTreeMap(), treap());
-        Map<String, java.util.function.IntFunction<Integer[]>> patterns = new LinkedHashMap<>();
-        patterns.put("random",          BenchmarkSearch::random);
-        patterns.put("ascending",       BenchmarkSearch::ascending);
-        patterns.put("descending",      BenchmarkSearch::descending);
+        List<MapWrapper> structures = List.of(
+                javaTreeMap(),
+                avlTreeMap(),
+                treap()
+        );
+
+        Map<String, IntFunction<Integer[]>> patterns = new LinkedHashMap<>();
+        patterns.put("random", BenchmarkSearch::random);
+        patterns.put("ascending", BenchmarkSearch::ascending);
+        patterns.put("descending", BenchmarkSearch::descending);
         patterns.put("partiallySorted", BenchmarkSearch::partiallySorted);
 
         List<Result> results = new ArrayList<>();
 
         for (var entry : patterns.entrySet()) {
             String patternName = entry.getKey();
+
             for (int n : SIZES) {
                 Integer[] data = entry.getValue().apply(n);
+
                 for (MapWrapper map : structures) {
                     Result r = measure(map, patternName, data);
                     results.add(r);
-                    System.out.printf("%-22s | %-15s | n=%-6d | hit=%.3f ms | miss=%.3f ms%n",
-                            r.structure(), r.pattern(), r.n(), r.successMs(), r.failMs());
+
+                    System.out.printf(
+                            "%-20s | %-15s | n=%-6d | hit=%.3f ms | miss=%.3f ms%n",
+                            r.structure(), r.pattern(), r.n(), r.successMs(), r.failMs()
+                    );
                 }
             }
         }
 
-        System.out.println("\n--- CSV OUTPUT ---");
+        System.out.println("\nCSV OUTPUT");
         System.out.println("structure,pattern,n,successMs,failMs");
         for (Result r : results) {
-            System.out.printf("%s,%s,%d,%.4f,%.4f%n",
-                    r.structure(), r.pattern(), r.n(), r.successMs(), r.failMs());
+            System.out.printf(
+                    "%s,%s,%d,%.4f,%.4f%n",
+                    r.structure(), r.pattern(), r.n(), r.successMs(), r.failMs()
+            );
         }
     }
 }

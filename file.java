@@ -6,6 +6,6 @@ public class file {
 
 /*
 git add .
-git commit -m "added treemap helpers"
+git commit -m "added detlete tests"
 git push
  */

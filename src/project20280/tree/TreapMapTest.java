@@ -1,6 +1,8 @@
 package project20280.tree;
 
 import org.junit.jupiter.api.Test;
+import project20280.interfaces.Entry;
+import project20280.interfaces.Position;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -177,5 +179,190 @@ class TreapMapTest {
         assertEquals("10", map.remove(10));
         assertNull(map.remove(10));
         assertEquals(2, map.size());
+    }
+
+    // ---- traversal tests ----
+
+    @Test
+    void testKeySetOrder() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", keysInOrder(map));
+    }
+
+    @Test
+    void testEntrySetOrder() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        insertAll(map, new Integer[]{30, 10, 20});
+        List<String> entries = new ArrayList<>();
+        for (Entry<Integer, String> e : map.entrySet()) {
+            entries.add(e.getKey() + "=" + e.getValue());
+        }
+        assertEquals("[10=10, 20=20, 30=30]", entries.toString());
+    }
+
+    @Test
+    void testFirstEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(1, map.firstEntry().getKey());
+    }
+
+    @Test
+    void testFirstEntryEmpty() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        assertNull(map.firstEntry());
+    }
+
+    @Test
+    void testLastEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(35, map.lastEntry().getKey());
+    }
+
+    @Test
+    void testLastEntryEmpty() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        assertNull(map.lastEntry());
+    }
+
+    @Test
+    void testCeilingEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(12, map.ceilingEntry(11).getKey());
+        assertEquals(2, map.ceilingEntry(2).getKey());
+        assertNull(map.ceilingEntry(100));
+    }
+
+    @Test
+    void testFloorEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(5, map.floorEntry(11).getKey());
+        assertEquals(5, map.floorEntry(5).getKey());
+        assertNull(map.floorEntry(0));
+    }
+
+    @Test
+    void testLowerEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(23, map.lowerEntry(24).getKey());
+        assertEquals(26, map.lowerEntry(31).getKey());
+        assertNull(map.lowerEntry(1));
+    }
+
+    @Test
+    void testHigherEntry() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        assertEquals(12, map.higherEntry(11).getKey());
+        assertEquals(2, map.higherEntry(1).getKey());
+        assertNull(map.higherEntry(35));
+    }
+
+    @Test
+    void testSubMap() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        List<Integer> sub = new ArrayList<>();
+        for (Entry<Integer, String> e : map.subMap(12, 34)) {
+            sub.add(e.getKey());
+        }
+        assertEquals("[12, 15, 21, 23, 24, 26, 33]", sub.toString());
+    }
+
+    @Test
+    void testSubMapEmpty() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        insertAll(map, new Integer[]{10, 20, 30});
+        List<Integer> sub = new ArrayList<>();
+        for (Entry<Integer, String> e : map.subMap(50, 60)) {
+            sub.add(e.getKey());
+        }
+        assertTrue(sub.isEmpty());
+    }
+
+    @Test
+    void testToString() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        String s = map.toString();
+        assertNotNull(s);
+        assertFalse(s.isEmpty());
+    }
+
+    // ---- invariant validation ----
+
+    private void validateBSTAndHeap(TreapMap<Integer, String> map) {
+        for (Position<Entry<Integer, String>> p : map.tree.inorder()) {
+            if (map.isInternal(p)) {
+                int prio = map.tree.getAux(p);
+                Position<Entry<Integer, String>> l = map.tree.left(p);
+                Position<Entry<Integer, String>> r = map.tree.right(p);
+
+                if (map.isInternal(l)) {
+                    assertTrue(p.getElement().getKey().compareTo(l.getElement().getKey()) > 0,
+                            "BST violation: " + p.getElement().getKey() + " should be > left " + l.getElement().getKey());
+                    assertTrue(prio <= map.tree.getAux(l),
+                            "Heap violation: parent prio " + prio + " > left child prio " + map.tree.getAux(l));
+                }
+                if (map.isInternal(r)) {
+                    assertTrue(p.getElement().getKey().compareTo(r.getElement().getKey()) < 0,
+                            "BST violation: " + p.getElement().getKey() + " should be < right " + r.getElement().getKey());
+                    assertTrue(prio <= map.tree.getAux(r),
+                            "Heap violation: parent prio " + prio + " > right child prio " + map.tree.getAux(r));
+                }
+            }
+        }
+    }
+
+    @Test
+    void testInvariantsAfterInserts() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+        validateBSTAndHeap(map);
+    }
+
+    @Test
+    void testInvariantsAfterDeletes() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        insertAll(map, arr);
+
+        map.remove(15);
+        map.remove(35);
+        map.remove(1);
+        validateBSTAndHeap(map);
+    }
+
+    @Test
+    void testInvariantsSortedInput() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        for (int i = 1; i <= 50; i++) {
+            map.put(i, Integer.toString(i));
+        }
+        validateBSTAndHeap(map);
+    }
+
+    @Test
+    void testInvariantsReverseSortedInput() {
+        TreapMap<Integer, String> map = treapWithSeed();
+        for (int i = 50; i >= 1; i--) {
+            map.put(i, Integer.toString(i));
+        }
+        validateBSTAndHeap(map);
     }
 }
